@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: snake-game
-        image: softconsist/snake-game:latest
+        image: rutwik02/snake-game:latest
         ports:
         - containerPort: 5000 
 

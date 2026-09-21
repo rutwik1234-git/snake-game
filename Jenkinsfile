@@ -32,9 +32,15 @@ pipeline {
                 echo "Deploying application to EKS cluster"
                 withCredentials([file(credentialsId: 'k8s-cred', variable: 'KUBECONFIG')]) {
                     sh '''
+                        set -e
                         export PATH=$PATH:/usr/local/bin:/usr/bin
-                        kubectl apply -f deployment-service.yaml --kubeconfig=$KUBECONFIG
-                        kubectl rollout restart deployment/boardgame-deployment --kubeconfig=$KUBECONFIG
+                        kubectl --kubeconfig="$KUBECONFIG" create namespace snake \\
+                            --dry-run=client -o yaml | \\
+                            kubectl --kubeconfig="$KUBECONFIG" apply -f -
+                        kubectl --kubeconfig="$KUBECONFIG" apply -f k8s/deployment.yml
+                        kubectl --kubeconfig="$KUBECONFIG" apply -f k8s/service.yml
+                        kubectl --kubeconfig="$KUBECONFIG" rollout status \\
+                            deployment/snake-deployment --namespace=snake
                     '''
                 }
             }
