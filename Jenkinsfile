@@ -5,7 +5,7 @@ pipeline {
         stage("Clone Code") {
             steps {
                 echo "Cloning The Code"
-                git url: "https://github.com/ashubambal/snake-game.git", branch: "main" 
+                git url: "https://github.com/rutwik1234-git/snake-game.git", branch: "main" 
             }
         }
 
