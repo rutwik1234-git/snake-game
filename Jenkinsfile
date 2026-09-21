@@ -61,3 +61,20 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            echo "Cleaning up local build artifacts..."
+            sh '''
+                docker rmi ${APP_NAME}:${BUILD_NUMBER} || true
+            '''
+            cleanWs()
+        }
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed."
+        }
+    }
+}
